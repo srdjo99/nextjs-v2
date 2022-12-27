@@ -15,12 +15,12 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  email     String
+  email     String    @unique
   firstName String
   lastName  String
   password  String
   projects  Project[]
-  tasks      Task[]
+  tasks     Task[]
 }
 
 model Project {
@@ -35,7 +35,7 @@ model Project {
   description String?
   due         DateTime?
   deleted     Boolean   @default(false)
-  tasks Task[]
+  tasks       Task[]
 
   @@unique([ownerId, name])
   @@index([ownerId, id])
@@ -59,8 +59,9 @@ model Task {
   projectId String
   project   Project     @relation(fields: [projectId], references: [id])
 
-  due     DateTime?
-  deleted Boolean   @default(false)
+  description String?
+  due         DateTime?
+  deleted     Boolean   @default(false)
 
   @@index([ownerId])
 }
