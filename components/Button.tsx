@@ -50,8 +50,18 @@ export interface ButtonProps
   // add type if there is prop not related to these above
 }
 
-const Button: FC<ButtonProps> = ({ children }) => {
-  return <button>{children}</button>;
+const Button: FC<ButtonProps> = ({
+  children,
+  intent,
+  size,
+  className,
+  ...props
+}) => {
+  return (
+    <button className={buttonClasses({ intent, size, className })} {...props}>
+      {children}
+    </button>
+  );
 };
 
 export default Button;
