@@ -3,6 +3,7 @@
 // useRouter from next/router is depracated
 import { useRouter } from "next/navigation";
 
+import Link from "next/link";
 import { useState, useCallback } from "react";
 
 import Input from "./Input";
@@ -10,10 +11,9 @@ import Card from "./Card";
 import Button from "./Button";
 
 import { register, signin } from "@/lib/api";
-import Link from "next/link";
 
 const registerContent = {
-  linkurl: "/signin",
+  linkUrl: "/signin",
   linkText: "Already have an account?",
   header: "Create A new accound",
   subheader: "Just a few things to get started",
@@ -21,7 +21,7 @@ const registerContent = {
 };
 
 const signinContent = {
-  linkurl: "/register",
+  linkUrl: "/register",
   linkText: "Don't have an account?",
   header: "Welcome back",
   subheader: "Enter your credentials to access your account",
@@ -35,25 +35,20 @@ const initial = {
   lastName: "",
 };
 
-const AuthForm = ({ mode }) => {
+const AuthForm = ({ mode }: any) => {
   const [formState, setFormState] = useState({ ...initial });
-  const [error, setError] = useState("");
   const router = useRouter();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    try {
-      if (mode === "register") {
-        await register(formState);
-      } else {
-        await signin(formState);
-      }
-    } catch (error) {
-      setError(`Could not ${mode}`);
-    } finally {
-      setFormState({ ...initial });
+    if (mode === "register") {
+      await register(formState);
+    } else {
+      await signin(formState);
     }
+
+    setFormState({ ...initial });
 
     router.replace("/home");
   };
@@ -78,7 +73,7 @@ const AuthForm = ({ mode }) => {
                   required
                   placeholder="First Name"
                   value={formState.firstName}
-                  onChange={(e) =>
+                  onChange={(e: any) =>
                     setFormState((prevState) => ({
                       ...prevState,
                       firstName: e.target.value,
@@ -93,7 +88,7 @@ const AuthForm = ({ mode }) => {
                   required
                   placeholder="Last Name"
                   value={formState.lastName}
-                  onChange={(e) =>
+                  onChange={(e: any) =>
                     setFormState((prevState) => ({
                       ...prevState,
                       lastName: e.target.value,
@@ -112,7 +107,7 @@ const AuthForm = ({ mode }) => {
               placeholder="Email"
               value={formState.email}
               className="w-full px-6 py-2 text-lg border-2 border-solid border-gray rounded-3xl"
-              onChange={(e) =>
+              onChange={(e: any) =>
                 setFormState((prevState) => ({
                   ...prevState,
                   email: e.target.value,
@@ -132,9 +127,7 @@ const AuthForm = ({ mode }) => {
               </span>
             </div>
             <div>
-              <Button type="submit" intent="secondary">
-                {content.buttonText}
-              </Button>
+              <Button intent="secondary">{content.buttonText}</Button>
             </div>
           </div>
         </form>
